@@ -1,5 +1,5 @@
 {
-  "name": "nui",
+  "name": "@n6/nui",
   "version": "1.0.0",
   "description": "N6 Network UI Framework",
   "main": "dist/index.js",
