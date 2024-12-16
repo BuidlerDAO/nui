@@ -1,0 +1,65 @@
+{
+  "name": "nui",
+  "version": "1.0.0",
+  "description": "N6 Network UI Framework",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.browser.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "jest",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuidlerDAO/nui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BuidlerDAO/nui/issues"
+  },
+  "homepage": "https://github.com/BuidlerDAO/nui/blob/main/README.md",
+  "keywords": [
+    "ui-library",
+    "react",
+    "typescript",
+    "component-library"
+  ],
+  "author": "Dendi",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/react": "^18.3.16",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.51.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.4.2",
+    "rollup": "^3.24.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "tailwindcss": "^3.4.16"
+  }
+}
