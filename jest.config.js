@@ -102,7 +102,8 @@ const config = {
 
   // A preset that is used as a base for Jest's configuration
   preset: 'ts-jest',
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-environment-jsdom',
+  testMatch: ['<rootDir>/src/__tests__/**/*.test.tsx'], // 确保匹配到测试文件
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
