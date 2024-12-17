@@ -10,7 +10,7 @@
     "build": "rollup -c",
     "test": "jest",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx'",
+    "lint": "eslint src/**/*.ts src/**/*.tsx",
     "prepare": "npm run build",
     "prepublishOnly": "npm run test && npm run lint",
     "preversion": "npm run lint",
