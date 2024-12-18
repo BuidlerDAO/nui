@@ -35,7 +35,7 @@ describe('NTryAgain Component', () => {
 
     expect(screen.getByText(customText)).toBeInTheDocument();
 
-    const container = screen.getByText('Try again').closest('div');
+    const container = screen.getByRole('img').closest('div');
     expect(container).toHaveClass(customContainerClass);
 
     const imageElement = screen.getByAltText('No data');
