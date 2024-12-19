@@ -22,8 +22,6 @@ export type NInputProps = {
   debounceTime?: number;
 };
 
-const hasState = (state: InputState, flag: InputState) => (state & flag) === flag;
-
 export const NInput: React.FC<NInputProps> = ({
   placeholder = '',
   containerClassName = '',
@@ -61,18 +59,16 @@ export const NInput: React.FC<NInputProps> = ({
     <div
       className={classNames(
         'relative h-[46px] w-full',
-        hasState(state, InputState.Search) ? 'pl-[48px]' : 'rounded-[20px]',
+        state & InputState.Search ? 'pl-[48px]' : 'rounded-[20px]',
         'border-[2px] border-[transparent] bg-gray-1 px-4 py-[12px] outline-none',
         containerClassName,
-        (focus || hasState(state, InputState.Focused)) &&
-          (hasState(state, InputState.Search) && value ? '!border-b-gray-2' : '!border-gray-2'),
-        hasState(state, InputState.Error) && '!border-[#E94344]',
-        hasState(state, InputState.Disabled) && 'cursor-not-allowed opacity-65', // Disabled state
+        (focus || state & InputState.Focused) &&
+          (state & InputState.Search && value ? '!border-b-gray-2' : '!border-gray-2'),
+        state & InputState.Error && '!border-[#E94344]',
+        state & InputState.Disabled && 'cursor-not-allowed opacity-65', // Disabled state
       )}
     >
-      {hasState(state, InputState.Search) && (
-        <span className="absolute left-4">{searchIcon || <DefaultSearchIcon />}</span>
-      )}
+      {state & InputState.Search && <span className="absolute left-4">{searchIcon || <DefaultSearchIcon />}</span>}
       <input
         value={isControlled ? value : content}
         className={classNames(
@@ -83,7 +79,7 @@ export const NInput: React.FC<NInputProps> = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         onInput={handleInput}
-        disabled={hasState(state, InputState.Disabled)}
+        disabled={!!(state & InputState.Disabled)}
       />
     </div>
   );
