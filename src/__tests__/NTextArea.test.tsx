@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { NTextarea } from '../NTextArea';
+import { NTextarea, TextareaStatus } from '../NTextArea';
 
 describe('Textarea Component', () => {
   test('renders textarea with placeholder', () => {
@@ -9,32 +9,6 @@ describe('Textarea Component', () => {
     const textareaElement = screen.getByPlaceholderText('Enter description');
     expect(textareaElement).toBeInTheDocument();
   });
-
-  //   test('handles controlled textarea value', () => {
-  //     const onChangeMock = jest.fn();
-  //     render(<NTextarea value="Initial Content" onChange={onChangeMock} />);
-  //     const textareaElement = screen.getByDisplayValue('Initial Content');
-  //     fireEvent.change(textareaElement, { target: { value: 'Updated Content' } });
-
-  //     jest.runAllTimers();
-
-  //     expect(onChangeMock).toHaveBeenCalledWith('Updated Content');
-  //   });
-  //   test('handles controlled textarea value', () => {
-  //     const onChangeMock = jest.fn();
-  //     render(<NTextarea value="Initial Content" onChange={onChangeMock} />);
-
-  //     const textareaElement = screen.getByDisplayValue('Initial Content');
-
-  //     // Trigger the change event
-  //     fireEvent.change(textareaElement, { target: { value: 'Updated Content' } });
-
-  //     // Ensure the debounced function is called by running all timers
-  //     jest.runAllTimers(); // Simulate debounce time
-
-  //     // Check if the onChangeMock was called with the updated value
-  //     expect(onChangeMock).toHaveBeenCalledWith('Updated Content');
-  //   });
 
   test('handles uncontrolled textarea value', () => {
     render(<NTextarea placeholder="Write here" />);
@@ -50,10 +24,22 @@ describe('Textarea Component', () => {
     expect(textareaElement.style.height).not.toBe('auto'); // Dynamic height should be applied
   });
 
-  test('shows error state', () => {
-    render(<NTextarea placeholder="Enter description" error={true} />);
+  test('shows error state with bitwise status', () => {
+    render(<NTextarea placeholder="Enter description" status={TextareaStatus.Error} />);
     const container = screen.getByPlaceholderText('Enter description').parentElement;
-    expect(container).toHaveClass('!border-[#E94344]');
+    expect(container).toHaveClass('!border-[#E94344]'); // Check if the error border is applied
+  });
+
+  test('shows warning state with bitwise status', () => {
+    render(<NTextarea placeholder="Enter description" status={TextareaStatus.Warning} />);
+    const container = screen.getByPlaceholderText('Enter description').parentElement;
+    expect(container).toHaveClass('!border-[#FF9800]');
+  });
+
+  test('shows normal state with bitwise status', () => {
+    render(<NTextarea placeholder="Enter description" status={TextareaStatus.Normal} />);
+    const container = screen.getByPlaceholderText('Enter description').parentElement;
+    expect(container).toHaveClass('border-transparent');
   });
 
   test('calls onChange with debounced input', () => {

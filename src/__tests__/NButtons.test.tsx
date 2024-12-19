@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { NButtons } from '../NButtons';
+import { NButtons, ButtonState } from '../NButtons';
 
 describe('NButtons Component', () => {
   test('renders button with children content', () => {
@@ -13,17 +13,17 @@ describe('NButtons Component', () => {
     render(<NButtons>Default Button</NButtons>);
     const button = screen.getByText('Default Button');
     expect(button).toHaveClass(
-      'flex shrink-0 cursor-pointer items-center justify-center text-center text-base font-semibold',
+      'flex shrink-0 cursor-pointer items-center justify-center px-[20px] py-[10px] text-center text-base font-semibold',
     );
   });
 
-  test('applies small size classes when small is true', () => {
-    render(<NButtons small>Small Button</NButtons>);
+  test('applies small size classes when ButtonState.Small is set', () => {
+    render(<NButtons state={ButtonState.Small}>Small Button</NButtons>);
     const button = screen.getByText('Small Button');
     expect(button).toHaveClass('rounded-full bg-[#C379FC1A] !text-xs');
   });
 
-  test('applies large size classes when small is false', () => {
+  test('applies large size classes when ButtonState.Small is not set', () => {
     render(<NButtons>Large Button</NButtons>);
     const button = screen.getByText('Large Button');
     expect(button).toHaveClass('h-[50px] rounded-[16px]');
@@ -35,34 +35,22 @@ describe('NButtons Component', () => {
     expect(button).toHaveClass('custom-class');
   });
 
-  test('applies primary type classes when type is "primary"', () => {
-    render(<NButtons type="primary">Primary Button</NButtons>);
+  test('applies primary type classes when ButtonState.Primary is set', () => {
+    render(<NButtons state={ButtonState.Primary}>Primary Button</NButtons>);
     const button = screen.getByText('Primary Button');
     expect(button).toHaveClass('text-[black] bg-main');
   });
 
-  test('applies secondary type classes when type is "secondary"', () => {
-    render(<NButtons type="secondary">Secondary Button</NButtons>);
-    const button = screen.getByText('Secondary Button');
-    expect(button).toHaveClass('text-[black] bg-main-dark');
-  });
-
-  test('applies white type classes when type is "white"', () => {
-    render(<NButtons type="white">White Button</NButtons>);
+  test('applies white type classes when ButtonState.White is set', () => {
+    render(<NButtons state={ButtonState.White}>White Button</NButtons>);
     const button = screen.getByText('White Button');
     expect(button).toHaveClass('text-[black] bg-[white]');
   });
 
-  test('applies black type classes when type is "black"', () => {
-    render(<NButtons type="black">Black Button</NButtons>);
+  test('applies black type classes when ButtonState.Black is set', () => {
+    render(<NButtons state={ButtonState.Black}>Black Button</NButtons>);
     const button = screen.getByText('Black Button');
     expect(button).toHaveClass('text-[white] bg-black-1');
-  });
-
-  test('applies main type classes when type is "main"', () => {
-    render(<NButtons type="main">Main Button</NButtons>);
-    const button = screen.getByText('Main Button');
-    expect(button).toHaveClass('text-[white] bg-main-light');
   });
 
   test('button click event triggers onClick function', () => {
@@ -73,15 +61,22 @@ describe('NButtons Component', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  test('disabled button does not trigger onClick function', () => {
+  test('disabled button does not trigger onClick function when ButtonState.Disabled is set', () => {
     const onClick = jest.fn();
     render(
-      <NButtons disable onClick={onClick}>
+      <NButtons state={ButtonState.Disabled} onClick={onClick}>
         Disabled Button
       </NButtons>,
     );
     const button = screen.getByText('Disabled Button');
     fireEvent.click(button);
     expect(onClick).not.toHaveBeenCalled();
+  });
+
+  test('applies combined classes when multiple states are set', () => {
+    render(<NButtons state={ButtonState.Small | ButtonState.Primary}>Combined Button</NButtons>);
+    const button = screen.getByText('Combined Button');
+    expect(button).toHaveClass('rounded-full bg-[#C379FC1A] !text-xs');
+    expect(button).toHaveClass('text-[black] bg-main');
   });
 });

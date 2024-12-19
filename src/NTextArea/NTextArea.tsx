@@ -2,8 +2,20 @@ import React, { FormEvent, useRef, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import debounce from 'lodash.debounce';
 
+// Enum for Textarea status using bitwise operations
+export enum TextareaStatus {
+  Normal = 0, // 000
+  Error = 1 << 0, // 001
+  Warning = 1 << 1, // 010
+}
+
+// Helper function to check if a specific status is set in the current state
+function hasStatus(state: number, status: TextareaStatus): boolean {
+  return (state & status) === status;
+}
+
 export type NTextareaProps = {
-  error?: boolean;
+  status?: TextareaStatus; // Replaced 'error' with 'status' of type TextareaStatus
   placeholder?: string;
   containerClassName?: string;
   textareaClassName?: string;
@@ -19,7 +31,7 @@ export const NTextarea: React.FC<NTextareaProps> = ({
   textareaClassName = '',
   onChange,
   value,
-  error = false,
+  status = TextareaStatus.Normal, // Default to 'Normal' status
   minHeight = '50px',
   maxHeight = '240px',
 }) => {
@@ -41,7 +53,6 @@ export const NTextarea: React.FC<NTextareaProps> = ({
   }, [content, value]);
 
   const handleFocus = () => setFocus(true);
-
   const handleBlur = () => setFocus(false);
 
   const handleInput = (event: FormEvent<HTMLTextAreaElement>) => {
@@ -61,7 +72,9 @@ export const NTextarea: React.FC<NTextareaProps> = ({
         'relative w-full rounded-[20px] border-[1px] border-[transparent] bg-gray-1 px-4 py-[10px] outline-none',
         containerClassName,
         focus && '!border-gray-2',
-        error && '!border-[#E94344]',
+        hasStatus(status, TextareaStatus.Error) && '!border-[#E94344]', // Apply error border if error status is set
+        hasStatus(status, TextareaStatus.Warning) && '!border-[#FF9800]', // Apply warning border if warning status is set
+        status === TextareaStatus.Normal && 'border-transparent',
       )}
     >
       <textarea

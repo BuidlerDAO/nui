@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { NInput } from '../NInput';
+import { NInput, InputState } from '../NInput';
 
 describe('Input Component', () => {
   test('renders input with placeholder', () => {
@@ -18,9 +18,17 @@ describe('Input Component', () => {
   });
 
   test('shows error state', () => {
-    render(<NInput placeholder="Enter text" error={true} />);
+    render(<NInput placeholder="Enter text" state={InputState.Error} />);
     const container = screen.getByPlaceholderText('Enter text').parentElement;
     expect(container).toHaveClass('!border-[#E94344]');
+  });
+
+  test('shows disabled state', () => {
+    render(<NInput placeholder="Enter text" state={InputState.Disabled} />);
+    const inputElement = screen.getByPlaceholderText('Enter text');
+    expect(inputElement).toBeDisabled();
+    const container = inputElement.parentElement;
+    expect(container).toHaveClass('cursor-not-allowed opacity-65');
   });
 
   test('calls onChange with debounced input', () => {
